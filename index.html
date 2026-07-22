@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<title>🔥 사지마연구소 PICK</title>
+<style>
+  :root { --accent: #F06A00; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background:#0a0a0a; color:#f2f2f2; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; padding:0 14px calc(70px + env(safe-area-inset-bottom)); }
+  .wrap { max-width:560px; margin:0 auto; }
+  header { text-align:center; padding:calc(34px + env(safe-area-inset-top)) 0 8px; }
+  header h1 { font-size:30px; font-weight:900; letter-spacing:-1px; }
+  header .sub { color:#9a9a9a; font-size:14px; margin-top:8px; }
+  header .brand { display:inline-block; margin-top:14px; font-size:12px; font-weight:700; color:var(--accent); border:1px solid var(--accent); border-radius:999px; padding:4px 12px; }
+  .count { color:#7a7a7a; font-size:13px; text-align:center; margin:18px 0 10px; }
+  .search { width:100%; padding:15px 16px; border-radius:14px; border:1px solid #262626; background:#141414; color:#f2f2f2; font-size:16px; margin-bottom:20px; -webkit-appearance:none; }
+  .search::placeholder { color:#666; }
+  .grid { display:flex; flex-direction:column; gap:16px; }
+  .card { position:relative; display:block; background:#141416; border:1px solid #232326; border-radius:18px; overflow:hidden; text-decoration:none; color:inherit; transition:transform .12s ease, border-color .12s ease; -webkit-tap-highlight-color:transparent; }
+  .card:active { transform:scale(.985); }
+  .card:hover { border-color:var(--accent); }
+  .rank { position:absolute; top:0; left:0; z-index:2; margin:12px; font-size:13px; font-weight:900; color:#fff; background:rgba(0,0,0,.62); padding:6px 11px; border-radius:999px; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+  .badge { color:var(--accent); margin-left:4px; }
+  .thumb { width:100%; aspect-ratio:1/1; background:#1c1c1f; position:relative; }
+  .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+  .thumb.noimg { display:flex; align-items:center; justify-content:center; }
+  .thumb.noimg::after { content:'🛒'; font-size:44px; opacity:.35; }
+  .body { padding:16px 18px 20px; }
+  .src { display:inline-block; font-size:11px; font-weight:800; padding:3px 9px; border-radius:6px; margin-bottom:10px; }
+  .src-coupang { background:#1a3fd4; color:#fff; }
+  .src-ali, .src-aliexpress { background:#e62e04; color:#fff; }
+  .title { font-size:16.5px; font-weight:700; line-height:1.45; margin-bottom:12px; }
+  .price-label { font-size:12px; color:var(--accent); font-weight:700; margin-bottom:4px; }
+  .price-row { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .price { font-size:24px; font-weight:900; }
+  .ship { font-size:12px; color:#4aa3ff; font-weight:700; }
+  .cta { display:block; margin-top:16px; text-align:center; background:var(--accent); color:#111; font-weight:900; font-size:16px; padding:16px; border-radius:13px; text-decoration:none; cursor:pointer; }
+  .cta:active { opacity:.9; }
+  .disc { text-align:center; color:#8a8a8a; font-size:11.5px; line-height:1.5; margin:0 auto 16px; max-width:520px; }
+  .empty { text-align:center; color:#666; padding:40px 0; }
+  footer { text-align:center; color:#5a5a5a; font-size:11px; margin-top:34px; line-height:1.6; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🔥 사지마연구소 PICK</h1>
+    <div class="sub">진짜 인기있는 제품만 추천합니다</div>
+    <div class="brand">사지마 연구소</div>
+  </header>
+  <div class="count">총 <b>3</b>개 제품</div>
+  <div class="disc">쿠팡 파트너스 등 제휴 링크가 포함되어 있으며, 구매 시 일정액의 수수료를 받을 수 있습니다. 버튼을 직접 누르실 때만 판매 페이지로 이동합니다.</div>
+  <input class="search" id="q" type="search" placeholder="🔍 제품 검색…" autocomplete="off">
+  <div class="grid" id="grid">
+    
+    <div class="card" data-title="샤오미 미지아 스탠딩 선풍기 1X 업그레이드 버전">
+      <div class="rank">#003 </div>
+      <div class="thumb"><img loading="lazy" src="https://ads-partners.coupang.com/image1/XaO_IEKXZEY25rcLXS0_5PVm5Qwr68wcrESb2bPvSg86sownx5D_s6xUSrcpfgvGGBKeverWQRLbaWBiDNfN7Bju5eHCBsvRqwHlTUKNob7YgKxXXxgNhevYu-pK8NvSH0-zrH4-qGbVGZZjdy8z1tSwNnLoTF4ldqrFvo5CZjpuyA4xQLl4C5uzmmqp1pCn_oLRh9gck0-qd4D4dXn2lOVKyoRy2wmpyT64mRO_XYhtngt0jBZJPh2KqOs4jZvYChjtvkRYtgcXRP5_sVpwFZ5Wd5oumLnDsMRvGnZeodClMdZCQlMbM7A_PtVkSjl2YuthQg==" alt="샤오미 미지아 스탠딩 선풍기 1X 업그레이드 버전" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
+      <div class="body">
+        <div class="src src-coupang">쿠팡</div>
+        <h3 class="title">샤오미 미지아 스탠딩 선풍기 1X 업그레이드 버전</h3>
+        <div class="price-label">쿠팡 최저가</div>
+        <div class="price-row"><span class="price">61,540원</span></div>
+        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=7353677472&amp;itemId=18929123678&amp;vendorItemId=86055993725&amp;traceid=V0-153-9c3cba8d068abc1c&amp;requestid=20260708223102407168051948&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">🛒 쿠팡에서 보기</a>
+      </div>
+    </div>
+
+    <div class="card" data-title="소싱 엔진 아이스 제트 휴대용 선풍기, ENGINE-ICE-Z, 화이트">
+      <div class="rank">#002 </div>
+      <div class="thumb"><img loading="lazy" src="https://ads-partners.coupang.com/image1/FPsat82MzquqekgYFBaWdiKKFQYxzwo9iUhmbI_FliWaBdcu0xYlOS-BD0MEmjrhFtyMqsDTXRhYjEoTi4v8qpuflZUSFBv5rQzq6n7a4RFwKEfZcn91k8JUSuKZG7yN4AdbBH09xlAOLxSoOvBC8-C5eoL2q11KYUUlwY5wAz76-swSkr1Rhf81YGmbOTLc4zZ7FhTJ6ti3x2VQmTPIupZ0b_p93vioSNWah_AmxGu9gdpbUxlsUbs7TtxiBQD3RzpG8-WqGvDIodomu8Pp1aSUJ3CZJMUMoUE=" alt="소싱 엔진 아이스 제트 휴대용 선풍기, ENGINE-ICE-Z, 화이트" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
+      <div class="body">
+        <div class="src src-coupang">쿠팡</div>
+        <h3 class="title">소싱 엔진 아이스 제트 휴대용 선풍기, ENGINE-ICE-Z, 화이트</h3>
+        <div class="price-label">쿠팡 최저가</div>
+        <div class="price-row"><span class="price">27,000원</span><span class="ship">🚀 로켓배송</span></div>
+        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=8941017992&amp;itemId=26146368616&amp;vendorItemId=93159355178&amp;traceid=V0-153-0ee50823a3530703&amp;clickBeacon=40f554f0-79fe-11f1-acf0-c51bcb2dd073%7E3&amp;requestid=20260707212034337134640375&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">🛒 쿠팡에서 보기</a>
+      </div>
+    </div>
+
+    <div class="card" data-title="[TV홈쇼핑동일상품] 니카사 진공흡착 스팀다리미 핸디형 가정용 올케어 의류 진공흡입 스타일">
+      <div class="rank">#001 </div>
+      <div class="thumb"><img loading="lazy" src="https://ads-partners.coupang.com/image1/5-IQCE3IKTrBlTBk5y81RYUgwdWR_n-ne-i4SeY1TeQ5rtHXQi60Q5XtOBY72-KjCv_CiVrHErdgslW-9iIUh6Xo8HICBn9wh_EIVm1Rw6cx4tWcLMXZD-y9nTRweqPW9S3j5BPNPgpkrA9K3ndfpDh3Sbvl3fCKrKZuEYQToLLdHqL6-vH6yx2OGEuHhiJuOE2Jjk0ql9u083Itxbyul7qh7u6Dz59qsywCtB4_haB9Nr1exfh3VOAsyTj8NPFTcUJ_Y94ZSOn5fs8szCj6FtGuJxgVEp3FJC_8NGHkCo7gnMZ_8RffcU81oXWcMDt0c95BDA==" alt="[TV홈쇼핑동일상품] 니카사 진공흡착 스팀다리미 핸디형 가정용 올케어 의류 진공흡입 스타일" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
+      <div class="body">
+        <div class="src src-coupang">쿠팡</div>
+        <h3 class="title">[TV홈쇼핑동일상품] 니카사 진공흡착 스팀다리미 핸디형 가정용 올케어 의류 진공흡입 스타일</h3>
+        <div class="price-label">쿠팡 최저가</div>
+        <div class="price-row"><span class="price">198,000원</span><span class="ship">🚀 로켓배송</span></div>
+        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=9452815546&amp;itemId=28122526144&amp;vendorItemId=95078300705&amp;traceid=V0-153-45b52148fc0ad710&amp;requestid=20260609161958277042069776&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">🛒 쿠팡에서 보기</a>
+      </div>
+    </div>
+  </div>
+  <div class="empty" id="empty" style="display:none">검색 결과가 없습니다</div>
+  <footer>이 포스팅은 쿠팡 파트너스 · 알리익스프레스 어필리에이트 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</footer>
+</div>
+<script>
+  const q = document.getElementById('q');
+  const cards = [...document.querySelectorAll('.card')];
+  const empty = document.getElementById('empty');
+  q.addEventListener('input', () => {
+    const v = q.value.trim().toLowerCase();
+    let shown = 0;
+    cards.forEach(c => {
+      const hit = c.dataset.title.toLowerCase().includes(v);
+      c.style.display = hit ? '' : 'none';
+      if (hit) shown++;
+    });
+    empty.style.display = shown ? 'none' : 'block';
+  });
+</script>
+</body>
+</html>
