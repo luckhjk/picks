@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>틱톡 연결 — 사지마연구소</title>
+<style>
+  body{background:#0a0a0a;color:#eee;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;line-height:1.7;padding:40px 18px}
+  .wrap{max-width:640px;margin:0 auto}
+  h1{font-size:22px;font-weight:900;margin-bottom:10px}
+  .box{background:#141416;border:1px solid #26262b;border-radius:14px;padding:18px;margin-top:16px}
+  .code{word-break:break-all;font-family:ui-monospace,Menlo,monospace;font-size:13px;color:#ffb37a;background:#0f0f12;border:1px solid #303035;border-radius:10px;padding:12px;margin-top:8px}
+  button{background:#F06A00;color:#111;font-weight:800;border:0;border-radius:10px;padding:12px 18px;font-size:15px;cursor:pointer;margin-top:12px}
+  .muted{color:#8a8a8a;font-size:13px}
+  .err{color:#ff7b7b}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎵 틱톡 연결</h1>
+  <div id="out"></div>
+  <div class="muted" style="margin-top:22px">이 페이지는 틱톡 로그인 후 되돌아오는 곳이에요. 아래 값을 복사해 스튜디오의 "이동된 주소 붙여넣기" 칸에 넣고 <b>연결 완료</b>를 누르세요.</div>
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const code = q.get('code'), err = q.get('error'), desc = q.get('error_description');
+  const out = document.getElementById('out');
+  if (code) {
+    out.innerHTML = '<div class="box"><b>✅ 인증 성공</b><div class="muted">아래 전체 주소를 복사하세요.</div>'
+      + '<div class="code" id="full">' + location.href + '</div>'
+      + '<button id="copy">📋 주소 복사</button> <span id="msg" class="muted"></span></div>';
+    document.getElementById('copy').onclick = () => {
+      navigator.clipboard.writeText(location.href).then(() => {
+        document.getElementById('msg').textContent = '복사됨! 스튜디오에 붙여넣으세요.';
+      }).catch(() => {
+        document.getElementById('msg').textContent = '수동으로 위 주소를 복사해주세요.';
+      });
+    };
+  } else if (err) {
+    out.innerHTML = '<div class="box"><b class="err">연결 실패</b><div class="muted">' + err
+      + (desc ? (' — ' + desc) : '') + '</div></div>';
+  } else {
+    out.innerHTML = '<div class="box">이 페이지는 틱톡 인증 후 자동으로 열립니다.<div class="muted">직접 열면 표시할 코드가 없어요.</div></div>';
+  }
+</script>
+</body>
+</html>
