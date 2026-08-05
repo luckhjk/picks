@@ -27,14 +27,17 @@
   .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
   .thumb.noimg { display:flex; align-items:center; justify-content:center; }
   .thumb.noimg::after { content:'🛒'; font-size:44px; opacity:.35; }
-  /* 영상이 있는 제품: 제품사진 + 세로 쇼츠 썸네일을 한 줄에 (카드가 오히려 낮아진다) */
-  .thumb.hasvid { aspect-ratio:auto; height:200px; display:flex; gap:2px; }
-  .thumb.hasvid .pimg { flex:1; min-width:0; background:#1c1c1f; }
-  .thumb.hasvid .pimg img { width:100%; height:100%; object-fit:cover; }
-  .vbox { position:relative; width:113px; flex:none; background:#000; cursor:pointer; }
+  /* 영상이 있는 제품: 제품사진 + 세로 쇼츠 썸네일을 한 줄에.
+     높이는 제품사진이 안 잘릴 만큼 넉넉히, 사진은 contain으로 통째로 보여준다
+     (cover로 꽉 채우면 정사각 상품사진의 위아래가 잘려 눌린 것처럼 보인다). */
+  .thumb.hasvid { aspect-ratio:auto; height:270px; display:flex; gap:3px; }
+  .thumb.hasvid .pimg { flex:1; min-width:0; background:#fff; }
+  .thumb.hasvid .pimg img { width:100%; height:100%; object-fit:contain; padding:8px; }
+  .thumb.hasvid .pimg.noimg { background:#1c1c1f; }
+  .vbox { position:relative; width:152px; flex:none; background:#000; cursor:pointer; }
   .vbox img { width:100%; height:100%; object-fit:cover; display:block; }
   .vbox .pl { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
-  .vbox .pl i { width:44px; height:44px; border-radius:50%; background:rgba(0,0,0,.55);
+  .vbox .pl i { width:52px; height:52px; border-radius:50%; background:rgba(0,0,0,.55);
     border:2px solid rgba(255,255,255,.75); display:flex; align-items:center; justify-content:center; }
   .vbox .pl i::after { content:''; border-left:13px solid #fff; border-top:8px solid transparent;
     border-bottom:8px solid transparent; margin-left:4px; }
