@@ -27,6 +27,23 @@
   .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
   .thumb.noimg { display:flex; align-items:center; justify-content:center; }
   .thumb.noimg::after { content:'🛒'; font-size:44px; opacity:.35; }
+  /* 영상이 있는 제품: 제품사진 + 세로 쇼츠 썸네일을 한 줄에 (카드가 오히려 낮아진다) */
+  .thumb.hasvid { aspect-ratio:auto; height:200px; display:flex; gap:2px; }
+  .thumb.hasvid .pimg { flex:1; min-width:0; background:#1c1c1f; }
+  .thumb.hasvid .pimg img { width:100%; height:100%; object-fit:cover; }
+  .vbox { position:relative; width:113px; flex:none; background:#000; cursor:pointer; }
+  .vbox img { width:100%; height:100%; object-fit:cover; display:block; }
+  .vbox .pl { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+  .vbox .pl i { width:44px; height:44px; border-radius:50%; background:rgba(0,0,0,.55);
+    border:2px solid rgba(255,255,255,.75); display:flex; align-items:center; justify-content:center; }
+  .vbox .pl i::after { content:''; border-left:13px solid #fff; border-top:8px solid transparent;
+    border-bottom:8px solid transparent; margin-left:4px; }
+  .vbox .vt { position:absolute; right:6px; bottom:6px; background:rgba(0,0,0,.68); color:#fff;
+    font-size:10px; font-weight:700; padding:2px 7px; border-radius:999px; }
+  .vbox iframe { width:100%; height:100%; border:0; display:block; }
+  .thumb.playing { height:auto; aspect-ratio:9/16; max-height:430px; }
+  .thumb.playing .pimg { display:none; }
+  .thumb.playing .vbox { width:100%; }
   .body { padding:16px 18px 20px; }
   .src { display:inline-block; font-size:11px; font-weight:800; padding:3px 9px; border-radius:6px; margin-bottom:10px; }
   .src-coupang { background:#1a3fd4; color:#fff; }
@@ -57,7 +74,7 @@
     
     <div class="card" data-title="스피도 성인용 써니G 수경 마리너 골드/브론즈/크림슨">
       <div class="rank">#008 <span class="badge">NEW</span></div>
-      <div class="thumb"><img loading="lazy" src="product_images/008.jpg" alt="스피도 성인용 써니G 수경 마리너 골드/브론즈/크림슨" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
+      <div class="thumb hasvid" data-vid="iVtEt_1wggs"><div class="pimg"><img loading="lazy" src="product_images/008.jpg" alt="스피도 성인용 써니G 수경 마리너 골드/브론즈/크림슨" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/iVtEt_1wggs/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="src src-coupang">쿠팡</div>
         <h3 class="title">스피도 성인용 써니G 수경 마리너 골드/브론즈/크림슨</h3>
@@ -69,7 +86,7 @@
 
     <div class="card" data-title="미지아 탁상 핸드헬드 2in1 팬, 18.5시간 배터리">
       <div class="rank">#007 </div>
-      <div class="thumb"><img loading="lazy" src="product_images/007.jpg" alt="미지아 탁상 핸드헬드 2in1 팬, 18.5시간 배터리" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
+      <div class="thumb hasvid" data-vid="CHZYKvR9xKY"><div class="pimg"><img loading="lazy" src="product_images/007.jpg" alt="미지아 탁상 핸드헬드 2in1 팬, 18.5시간 배터리" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/CHZYKvR9xKY/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="src src-ali">알리</div>
         <h3 class="title">미지아 탁상 핸드헬드 2in1 팬, 18.5시간 배터리</h3>
@@ -93,7 +110,7 @@
 
     <div class="card" data-title="BRUNO 브루노 블루투스 스피커 BDE060 볼륨 노브 화장실 방수 스피커">
       <div class="rank">#005 </div>
-      <div class="thumb"><img loading="lazy" src="https://ads-partners.coupang.com/image1/gu7piKhHA93hG3V9gjgzhP-FYSiLhNTst7jv7d6tkQiNQsPNG81GfGcVSumpgKGLRPyagLj1Ol3GWPp5_JPTM0DUd9Jj40xnHRXd5pMqn3UhaRFkUsc9Y3KjBbOYu-iPmhewHSVWBktfrsmsmFlz7ajHtKJG0Z9F8zpYlw0aqlgkvu52yY9qbW_AcJrOtC0Xn7lDAqw_GyC7mQsi2RizCdj4BwyDM1qxBu7sr4z-9rIc5nfeWcmq3RC0CrsYHkvoW-4doBRxxXoXFnZH8UfLSU-iIRn9oW7VSw95njyTvrmfBz16uMV9okoRG3iDLgZQTU3kNy_3" alt="BRUNO 브루노 블루투스 스피커 BDE060 볼륨 노브 화장실 방수 스피커" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
+      <div class="thumb hasvid" data-vid="XryZZ1zh1N4"><div class="pimg"><img loading="lazy" src="https://ads-partners.coupang.com/image1/gu7piKhHA93hG3V9gjgzhP-FYSiLhNTst7jv7d6tkQiNQsPNG81GfGcVSumpgKGLRPyagLj1Ol3GWPp5_JPTM0DUd9Jj40xnHRXd5pMqn3UhaRFkUsc9Y3KjBbOYu-iPmhewHSVWBktfrsmsmFlz7ajHtKJG0Z9F8zpYlw0aqlgkvu52yY9qbW_AcJrOtC0Xn7lDAqw_GyC7mQsi2RizCdj4BwyDM1qxBu7sr4z-9rIc5nfeWcmq3RC0CrsYHkvoW-4doBRxxXoXFnZH8UfLSU-iIRn9oW7VSw95njyTvrmfBz16uMV9okoRG3iDLgZQTU3kNy_3" alt="BRUNO 브루노 블루투스 스피커 BDE060 볼륨 노브 화장실 방수 스피커" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/XryZZ1zh1N4/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="src src-coupang">쿠팡</div>
         <h3 class="title">BRUNO 브루노 블루투스 스피커 BDE060 볼륨 노브 화장실 방수 스피커</h3>
@@ -105,7 +122,7 @@
 
     <div class="card" data-title="TELESIN 텔레신 다이빙 폰 리모트 케이스 방수 수중 촬영 스마트폰 핸들케이스">
       <div class="rank">#004 </div>
-      <div class="thumb"><img loading="lazy" src="https://ads-partners.coupang.com/image1/rjNE_x9LenA0DH2jrvTmdN28h9TglviPisYQtJCuuqRbc3BtmIwGIxGiTUtNMfcrOdhQWDdKDncE5HErI3Q813tjGyadL8c7DF28183ttUagzN0eqA6CjHaL81iNOioPF0zExdMJ58ZFZHrLtNGLv5mAQNV8sTFrVX6UBCWu1RpscmD4mUU1VMrunbwZxO_cIP-tVdT-nEbi3-0rxXxCBdRk6m05_GjBfPYliKdYzldx743gjc9J9fo0zPa_AhG0WRtr43W6gd3_QE6qt1jSkONB2d_vFwktiM4xT3tr1IPmZVKy93zjzrYgDh_S_00BveZ4Ew==" alt="TELESIN 텔레신 다이빙 폰 리모트 케이스 방수 수중 촬영 스마트폰 핸들케이스" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
+      <div class="thumb hasvid" data-vid="0xt9zcMonzE"><div class="pimg"><img loading="lazy" src="https://ads-partners.coupang.com/image1/rjNE_x9LenA0DH2jrvTmdN28h9TglviPisYQtJCuuqRbc3BtmIwGIxGiTUtNMfcrOdhQWDdKDncE5HErI3Q813tjGyadL8c7DF28183ttUagzN0eqA6CjHaL81iNOioPF0zExdMJ58ZFZHrLtNGLv5mAQNV8sTFrVX6UBCWu1RpscmD4mUU1VMrunbwZxO_cIP-tVdT-nEbi3-0rxXxCBdRk6m05_GjBfPYliKdYzldx743gjc9J9fo0zPa_AhG0WRtr43W6gd3_QE6qt1jSkONB2d_vFwktiM4xT3tr1IPmZVKy93zjzrYgDh_S_00BveZ4Ew==" alt="TELESIN 텔레신 다이빙 폰 리모트 케이스 방수 수중 촬영 스마트폰 핸들케이스" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/0xt9zcMonzE/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="src src-coupang">쿠팡</div>
         <h3 class="title">TELESIN 텔레신 다이빙 폰 리모트 케이스 방수 수중 촬영 스마트폰 핸들케이스</h3>
@@ -168,6 +185,19 @@
       if (hit) shown++;
     });
     empty.style.display = shown ? 'none' : 'block';
+  });
+
+  // 영상 썸네일을 누르면 그 자리에서 재생 (미리 불러두지 않아 페이지가 안 무거워짐)
+  document.querySelectorAll('.thumb.hasvid .vbox').forEach(box => {
+    box.addEventListener('click', e => {
+      e.preventDefault(); e.stopPropagation();
+      const thumb = box.closest('.thumb');
+      if (thumb.classList.contains('playing')) return;
+      thumb.classList.add('playing');
+      const vid = thumb.dataset.vid;
+      box.innerHTML = '<iframe src="https://www.youtube.com/embed/' + vid +
+        '?autoplay=1&playsinline=1&rel=0&modestbranding=1" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+    });
   });
 </script>
 </body>
