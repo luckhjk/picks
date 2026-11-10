@@ -17,23 +17,31 @@
   .count { color:#7a7a7a; font-size:13px; text-align:center; margin:18px 0 10px; }
   .search { width:100%; padding:15px 16px; border-radius:14px; border:1px solid #262626; background:#141414; color:#f2f2f2; font-size:16px; margin-bottom:20px; -webkit-appearance:none; }
   .search::placeholder { color:#666; }
-  .grid { display:flex; flex-direction:column; gap:16px; }
-  .card { position:relative; display:block; background:#141416; border:1px solid #232326; border-radius:18px; overflow:hidden; text-decoration:none; color:inherit; transition:transform .12s ease, border-color .12s ease; -webkit-tap-highlight-color:transparent; }
+  /* 3열 바둑판 — 한 화면에 9개씩 보이게(2026-11-10). 예전엔 1열이라 한 화면에
+     하나밖에 안 보여서 30개를 보려면 30번을 넘겨야 했다. */
+  .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; align-items:start; }
+  @media (max-width:360px) { .grid { grid-template-columns:repeat(2,1fr); gap:8px; } }
+  .card { position:relative; display:block; background:#141416; border:1px solid #232326; border-radius:13px; overflow:hidden; text-decoration:none; color:inherit; transition:transform .12s ease, border-color .12s ease; -webkit-tap-highlight-color:transparent; }
   .card:active { transform:scale(.985); }
   .card:hover { border-color:var(--accent); }
-  .rank { position:absolute; top:0; left:0; z-index:2; margin:12px; font-size:13px; font-weight:900; color:#fff; background:rgba(0,0,0,.62); padding:6px 11px; border-radius:999px; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+  .rank { position:absolute; top:0; left:0; z-index:2; margin:6px; font-size:10.5px; font-weight:900; color:#fff; background:rgba(0,0,0,.68); padding:3px 7px; border-radius:999px; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); letter-spacing:.2px; }
   .badge { color:var(--accent); margin-left:4px; }
   .thumb { width:100%; aspect-ratio:1/1; background:#1c1c1f; position:relative; }
   .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
   .thumb.noimg { display:flex; align-items:center; justify-content:center; }
   .thumb.noimg::after { content:'🛒'; font-size:44px; opacity:.35; }
-  /* 영상이 있는 제품: 제품사진 + 세로 쇼츠 썸네일을 한 줄에.
-     높이는 제품사진이 안 잘릴 만큼 넉넉히, 사진은 contain으로 통째로 보여준다
-     (cover로 꽉 채우면 정사각 상품사진의 위아래가 잘려 눌린 것처럼 보인다). */
-  .thumb.hasvid { aspect-ratio:auto; height:270px; display:flex; gap:3px; }
-  .thumb.hasvid .pimg { flex:1; min-width:0; background:#fff; }
-  .thumb.hasvid .pimg img { width:100%; height:100%; object-fit:contain; padding:8px; }
-  .thumb.hasvid .pimg.noimg { background:#1c1c1f; }
+  /* 영상이 있는 제품 — 3열에선 칸이 좁아 제품사진과 영상을 나란히 못 놓는다.
+     그래서 제품사진 한 장만 꽉 채우고, 오른쪽 아래 '▶영상' 쪽지만 올린다.
+     제품사진을 못 구한 것(쿠팡 스크래핑 403)은 .pimg 에 noimg 가 붙으므로
+     그때만 영상 썸네일이 대신 자리를 채운다 — 빈칸이 생기지 않게. */
+  .thumb.hasvid { aspect-ratio:1/1; height:auto; display:block; }
+  .thumb.hasvid .pimg { position:absolute; inset:0; background:#fff; }
+  .thumb.hasvid .pimg img { width:100%; height:100%; object-fit:cover; }
+  .thumb.hasvid .pimg.noimg { display:none; }
+  .thumb.hasvid .vbox { position:absolute; inset:0; width:auto; }
+  .thumb.hasvid .pimg:not(.noimg) ~ .vbox { background:transparent; pointer-events:none; }
+  .thumb.hasvid .pimg:not(.noimg) ~ .vbox > img,
+  .thumb.hasvid .pimg:not(.noimg) ~ .vbox > .pl { display:none; }
   .vbox { position:relative; width:152px; flex:none; background:#000; cursor:pointer; }
   .vbox img { width:100%; height:100%; object-fit:cover; display:block; }
   .vbox .pl { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
@@ -47,16 +55,22 @@
   .thumb.playing { height:auto; aspect-ratio:9/16; max-height:430px; }
   .thumb.playing .pimg { display:none; }
   .thumb.playing .vbox { width:100%; }
-  .body { padding:16px 18px 20px; }
-  .src { display:inline-block; font-size:11px; font-weight:800; padding:3px 9px; border-radius:6px; margin-bottom:10px; }
+  .body { padding:8px 8px 10px; }
+  .src { display:inline-block; font-size:9px; font-weight:800; padding:2px 5px; border-radius:4px; margin-bottom:5px; }
   .src-coupang { background:#1a3fd4; color:#fff; }
   .src-ali, .src-aliexpress { background:#e62e04; color:#fff; }
-  .title { font-size:16.5px; font-weight:700; line-height:1.45; margin-bottom:12px; }
-  .price-label { font-size:12px; color:var(--accent); font-weight:700; margin-bottom:4px; }
-  .price-row { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
-  .price { font-size:24px; font-weight:900; }
-  .ship { font-size:12px; color:#4aa3ff; font-weight:700; }
-  .cta { display:block; margin-top:16px; text-align:center; background:var(--accent); color:#111; font-weight:900; font-size:16px; padding:16px; border-radius:13px; text-decoration:none; cursor:pointer; }
+  /* 제목은 알리 원문이 70자가 넘기도 한다. 글자는 그대로 두고(검색이 안 깨지게)
+     화면에서만 2줄에서 자른다. */
+  .title { font-size:11.5px; font-weight:700; line-height:1.42; margin-bottom:6px;
+            display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+            overflow:hidden; word-break:break-all; }
+  .price-label { font-size:9.5px; color:var(--accent); font-weight:700; margin-bottom:2px; }
+  .price-row { display:flex; align-items:baseline; gap:5px; flex-wrap:wrap; min-height:19px; }
+  .price { font-size:14px; font-weight:900; letter-spacing:-.3px; }
+  /* 가격을 못 구한 제품이 빈칸으로 보이지 않게(쿠팡 스크래핑 403 등) */
+  .price:empty::after { content:'가격 확인'; font-size:11px; font-weight:700; color:#7b828d; }
+  .ship { font-size:9.5px; color:#4aa3ff; font-weight:700; }
+  .cta { display:block; margin-top:8px; text-align:center; background:var(--accent); color:#111; font-weight:900; font-size:11px; padding:7px 2px; border-radius:8px; text-decoration:none; cursor:pointer; letter-spacing:-.3px; }
   .cta:active { opacity:.9; }
   /* 쿠팡·알리 둘 다 있을 때 — 한 자리에서 비교하고 바로 고르게 */
   .srcs { display:flex; gap:6px; margin-bottom:10px; }
@@ -90,332 +104,332 @@
   <div class="grid" id="grid">
     
     <div class="card" data-title="보풀제거 &amp; 빨래볼 겸용 스펀지">
-      <div class="rank">#001 <span class="badge">NEW</span></div>
+      <div class="rank">#030 <span class="badge">NEW</span></div>
       <div class="thumb hasvid" data-vid="-abjsrN0nLg"><div class="pimg"><img loading="lazy" src="https://ae-pic-a1.aliexpress-media.com/kf/Sca89f42b7e0242089e15a2a805beb3f7J.jpg" alt="보풀제거 &amp; 빨래볼 겸용 스펀지" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/-abjsrN0nLg/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">보풀제거 &amp; 빨래볼 겸용 스펀지</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price">4,268원</span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c3ELKYDd" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c3ELKYDd" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="차량 찌그러짐 수리 툴(글루건 풀러 덴트 리페어 키트)">
-      <div class="rank">#002 </div>
+      <div class="rank">#029 </div>
       <div class="thumb hasvid" data-vid="kPF-ldekZbo"><div class="pimg"><img loading="lazy" src="https://ae-pic-a1.aliexpress-media.com/kf/S35d87ceaaf344c3bb1d0de35f347a2f8o.jpg" alt="차량 찌그러짐 수리 툴(글루건 풀러 덴트 리페어 키트)" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/kPF-ldekZbo/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">차량 찌그러짐 수리 툴(글루건 풀러 덴트 리페어 키트)</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price">6,320원</span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c3E5QSNV" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c3E5QSNV" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="창의적인 디자인 태양광 미니 자동차 조기 교육 장난감 참신한 태양 에너지 자동차 퍼즐 교육용 장치">
-      <div class="rank">#003 </div>
+      <div class="rank">#028 </div>
       <div class="thumb"><img loading="lazy" src="https://ae-pic-a1.aliexpress-media.com/kf/S15abf8687ccf4d9e929ded4f97d184e4w.jpg" alt="창의적인 디자인 태양광 미니 자동차 조기 교육 장난감 참신한 태양 에너지 자동차 퍼즐 교육용 장치" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">창의적인 디자인 태양광 미니 자동차 조기 교육 장난감 참신한 태양 에너지 자동차 퍼즐 교육용 장치</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price">5,859원</span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c4Ks42TZ" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c4Ks42TZ" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="세차용 병 스프레이 핸드 펌프 폼 스프레이어, 2L, 자동차 창문 청소, 3 가지 노즐, 핸드 공압 폼, 대포 눈 거품 스프레이">
-      <div class="rank">#004 </div>
+      <div class="rank">#027 </div>
       <div class="thumb"><img loading="lazy" src="https://ae-pic-a1.aliexpress-media.com/kf/S4b3f441838014b28bc0011b97153a481e.jpeg" alt="세차용 병 스프레이 핸드 펌프 폼 스프레이어, 2L, 자동차 창문 청소, 3 가지 노즐, 핸드 공압 폼, 대포 눈 거품 스프레이" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">세차용 병 스프레이 핸드 펌프 폼 스프레이어, 2L, 자동차 창문 청소, 3 가지 노즐, 핸드 공압 폼, 대포 눈 거품 스프레이</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price">17,549원</span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c4Etdshd" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c4Etdshd" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="탕위안 말랑이 스퀴시 투명 젤리볼 주물럭 촉감놀이 스트레스 해소 장난감 파스텔">
-      <div class="rank">#005 </div>
+      <div class="rank">#026 </div>
       <div class="thumb"><img loading="lazy" src="https://ads-partners.coupang.com/image1/ttYlZ_cznTtxXpUKtgXJ51FM5OaLqyINuT92Z7O7NJOEeVwy8EdPulNbah7XO9ZuynjOrNmpXaOkHZRbOrQGg0kyz3J75W-stW3t9vJ7OtntouP5S44PPpTwqjnt8aUAYm5hMVEmV_-QsSg8p-QQIGGpGexgEPsgMJutLqQHS9KAz_JE9OuIsTwiClp_PGUb4Rw-ha3ZQErqH4ocidd73qfzcjv-SAWUpkLAdBCVSHEZHqNHshQ8dIn0yHmnGDwFN5-TMjIX9vO6gfZvfUL79Tii_zkh4XuHjXWZPNx0MMbO4kWm5D3LlSO1wQaSk35bENSGbA8WCtK9APOLIhvRG-lSCBa4TlLHfibqmp080cYmPs9cAs9bzUqoPqnLkYzkwIZ1y1Upy1vn_YPG-qav3X1CIjJ9-OZ-dYqi3Bs5XXtYvk3v8qk3DIXECJcjy9yuTLpJetgCiXq6pwua9W6V1MZUjB0zjFxvFPjAqbVZH6NMCRT6CWfMAvCDmTOqI2axmogFAa4bZaagVWPkNnsmZa53IfcEar04YzIaI0xZTUM=" alt="탕위안 말랑이 스퀴시 투명 젤리볼 주물럭 촉감놀이 스트레스 해소 장난감 파스텔" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
       <div class="body">
         <div class="srcs"><span class="src src-coupang">쿠팡</span></div>
         <h3 class="title">탕위안 말랑이 스퀴시 투명 젤리볼 주물럭 촉감놀이 스트레스 해소 장난감 파스텔</h3>
         <div class="price-label">쿠팡 최저가</div><div class="price-row"><span class="price">7,900원</span><span class="ship">🚀 로켓배송</span></div>
-        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=9734794783&amp;itemId=29132655420&amp;vendorItemId=96001468358&amp;traceid=V0-153-ee38203e1f43f5a6&amp;requestid=20261109134219722054029978&amp;token=31850C%7CGM&amp;pt=0&amp;slot=3" target="_blank" rel="nofollow sponsored noopener">🛒 쿠팡에서 보기</a>
+        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=9734794783&amp;itemId=29132655420&amp;vendorItemId=96001468358&amp;traceid=V0-153-ee38203e1f43f5a6&amp;requestid=20261109134219722054029978&amp;token=31850C%7CGM&amp;pt=0&amp;slot=3" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="5-50개 재미있는 끈적끈적한 손 장난감, 탄력 있는 스퀴시 슬랩 팜 장난감, 참신한 선물, 파티 장난감, 생일 선물용">
-      <div class="rank">#006 </div>
+      <div class="rank">#025 </div>
       <div class="thumb"><img loading="lazy" src="https://ae-pic-a1.aliexpress-media.com/kf/S68efa9b4f58d4bce8ff6905fa4f0ef810.jpg" alt="5-50개 재미있는 끈적끈적한 손 장난감, 탄력 있는 스퀴시 슬랩 팜 장난감, 참신한 선물, 파티 장난감, 생일 선물용" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">5-50개 재미있는 끈적끈적한 손 장난감, 탄력 있는 스퀴시 슬랩 팜 장난감, 참신한 선물, 파티 장난감, 생일 선물용</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price">5,099원</span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c3gyXaEf" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c3gyXaEf" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="캠핑용 1인 텐트 침대(캠핑 콧)">
-      <div class="rank">#007 </div>
+      <div class="rank">#024 </div>
       <div class="thumb hasvid" data-vid="jAuBYaEfIY8"><div class="pimg noimg"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/jAuBYaEfIY8/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-coupang">쿠팡</span></div>
         <h3 class="title">캠핑용 1인 텐트 침대(캠핑 콧)</h3>
         <div class="price-label">쿠팡 최저가</div><div class="price-row"><span class="price"></span><span class="ship">🚀 로켓배송</span></div>
-        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=9725928327&amp;itemId=29105043018&amp;vendorItemId=86478559175&amp;traceid=V0-153-586f4f926c107687&amp;pt=0&amp;requestid=20261030070658500037242487&amp;slot=1" target="_blank" rel="nofollow sponsored noopener">🛒 쿠팡에서 보기</a>
+        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=9725928327&amp;itemId=29105043018&amp;vendorItemId=86478559175&amp;traceid=V0-153-586f4f926c107687&amp;pt=0&amp;requestid=20261030070658500037242487&amp;slot=1" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="캠핑용 침대 텐트(일체형 코트 텐트)">
-      <div class="rank">#008 </div>
+      <div class="rank">#023 </div>
       <div class="thumb hasvid" data-vid="_lwFotV7x3k"><div class="pimg noimg"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/_lwFotV7x3k/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-coupang">쿠팡</span></div>
         <h3 class="title">캠핑용 침대 텐트(일체형 코트 텐트)</h3>
         <div class="price-label">쿠팡 최저가</div><div class="price-row"><span class="price"></span><span class="ship">🚀 로켓배송</span></div>
-        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=7820133844&amp;itemId=21238077838&amp;vendorItemId=96152149016&amp;traceid=V0-153-526b054cb12aa65c&amp;requestid=20261029070644192124780837&amp;token=31850C%7CGM&amp;pt=0&amp;slot=1" target="_blank" rel="nofollow sponsored noopener">🛒 쿠팡에서 보기</a>
+        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=7820133844&amp;itemId=21238077838&amp;vendorItemId=96152149016&amp;traceid=V0-153-526b054cb12aa65c&amp;requestid=20261029070644192124780837&amp;token=31850C%7CGM&amp;pt=0&amp;slot=1" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="실리콘 흡입 휴대폰 거치대 매트, 다기능 흡입 컵, 벽면 스탠드, 사각형 미끄럼 방지 단면 케이스, 후면 스티커">
-      <div class="rank">#009 </div>
+      <div class="rank">#022 </div>
       <div class="thumb"><img loading="lazy" src="https://ae-pic-a1.aliexpress-media.com/kf/Sa23a952a463a40058c5c02b4a6d9cf46c.jpg" alt="실리콘 흡입 휴대폰 거치대 매트, 다기능 흡입 컵, 벽면 스탠드, 사각형 미끄럼 방지 단면 케이스, 후면 스티커" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">실리콘 흡입 휴대폰 거치대 매트, 다기능 흡입 컵, 벽면 스탠드, 사각형 미끄럼 방지 단면 케이스, 후면 스티커</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price">3,233원</span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c3MSWqu3" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c3MSWqu3" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="페로몬 과일파리 트랩 액체 과일파리 살충제 오래 지속되는 퇴치 미끼 곤충 포획기 과수원 해충 방제 도구">
-      <div class="rank">#010 </div>
+      <div class="rank">#021 </div>
       <div class="thumb"><img loading="lazy" src="https://ae-pic-a1.aliexpress-media.com/kf/S95a497717bd7431c8bf831e11d24487eH.jpg" alt="페로몬 과일파리 트랩 액체 과일파리 살충제 오래 지속되는 퇴치 미끼 곤충 포획기 과수원 해충 방제 도구" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">페로몬 과일파리 트랩 액체 과일파리 살충제 오래 지속되는 퇴치 미끼 곤충 포획기 과수원 해충 방제 도구</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price">6,708원</span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c4T3Pzsn" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c4T3Pzsn" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="네이처하이크 캠핑 씨스타 001 접이식 의자 발받침대 높은 등받이 초경량 접이식 야외 휴식 의자">
-      <div class="rank">#011 </div>
+      <div class="rank">#020 </div>
       <div class="thumb"><img loading="lazy" src="product_images/021.jpg" alt="네이처하이크 캠핑 씨스타 001 접이식 의자 발받침대 높은 등받이 초경량 접이식 야외 휴식 의자" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">네이처하이크 캠핑 씨스타 001 접이식 의자 발받침대 높은 등받이 초경량 접이식 야외 휴식 의자</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price">55,488원</span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c39MPefX" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c39MPefX" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="기삼 브러시리스 전기 터보 블로워 팬 35000RPM 에어 블로워 핸드헬드 리프 블로워 먼지 제거기 마키타 18V 배터리 핀용">
-      <div class="rank">#012 </div>
+      <div class="rank">#019 </div>
       <div class="thumb hasvid" data-vid="Uweun_HNjys"><div class="pimg"><img loading="lazy" src="product_images/020.jpg" alt="기삼 브러시리스 전기 터보 블로워 팬 35000RPM 에어 블로워 핸드헬드 리프 블로워 먼지 제거기 마키타 18V 배터리 핀용" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/Uweun_HNjys/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">기삼 브러시리스 전기 터보 블로워 팬 35000RPM 에어 블로워 핸드헬드 리프 블로워 먼지 제거기 마키타 18V 배터리 핀용</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price">52,967원</span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c3Pp50gf" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c3Pp50gf" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="드리미 X60 Ultra 올인원 로봇청소기">
-      <div class="rank">#013 </div>
+      <div class="rank">#018 </div>
       <div class="thumb hasvid" data-vid="ko5tQQJsQPQ"><div class="pimg"><img loading="lazy" src="product_images/019.jpg" alt="드리미 X60 Ultra 올인원 로봇청소기" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/ko5tQQJsQPQ/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-coupang">쿠팡</span></div>
         <h3 class="title">드리미 X60 Ultra 올인원 로봇청소기</h3>
         <div class="price-label">쿠팡 최저가</div><div class="price-row"><span class="price">990,000원</span><span class="ship">🚀 로켓배송</span></div>
-        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=9417161256&amp;itemId=27984924616&amp;vendorItemId=94942621363&amp;traceid=V0-153-336140e95c541502&amp;requestid=20260827154302947313332984&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">🛒 쿠팡에서 보기</a>
+        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=9417161256&amp;itemId=27984924616&amp;vendorItemId=94942621363&amp;traceid=V0-153-336140e95c541502&amp;requestid=20260827154302947313332984&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="공압식 스탠딩 데스크, 가정 사무실용 높이 조절 가능 이동식 노트북 테이블, 소형 앉아서/서서 사용 가능한 워크스테이션">
-      <div class="rank">#014 </div>
+      <div class="rank">#017 </div>
       <div class="thumb hasvid" data-vid="pLteEaXONh4"><div class="pimg"><img loading="lazy" src="product_images/018.jpg" alt="공압식 스탠딩 데스크, 가정 사무실용 높이 조절 가능 이동식 노트북 테이블, 소형 앉아서/서서 사용 가능한 워크스테이션" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/pLteEaXONh4/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">공압식 스탠딩 데스크, 가정 사무실용 높이 조절 가능 이동식 노트북 테이블, 소형 앉아서/서서 사용 가능한 워크스테이션</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price">272,040원</span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c3eqNDlt" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c3eqNDlt" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="무선조종 전동 종이비행기 완구 내충격 EPP폼 글라이더 어린이 야외 원키 이착륙 충전식 비행기, 1세트, 배터리 1개 구성">
-      <div class="rank">#015 </div>
+      <div class="rank">#016 </div>
       <div class="thumb hasvid" data-vid="jpp4DrV6XnI"><div class="pimg"><img loading="lazy" src="product_images/016.jpg" alt="무선조종 전동 종이비행기 완구 내충격 EPP폼 글라이더 어린이 야외 원키 이착륙 충전식 비행기, 1세트, 배터리 1개 구성" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/jpp4DrV6XnI/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-coupang">쿠팡</span></div>
         <h3 class="title">무선조종 전동 종이비행기 완구 내충격 EPP폼 글라이더 어린이 야외 원키 이착륙 충전식 비행기, 1세트, 배터리 1개 구성</h3>
         <div class="price-label">쿠팡 최저가</div><div class="price-row"><span class="price">36,900원</span><span class="ship">🚀 로켓배송</span></div>
-        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=9585355629&amp;itemId=28613212462&amp;vendorItemId=95811651001&amp;traceid=V0-153-adc2a67e40bca9cd&amp;clickBeacon=a736dd70-a112-11f1-a46a-799ecd6e0198%7E3&amp;requestid=20260826145451188005181273&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">🛒 쿠팡에서 보기</a>
+        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=9585355629&amp;itemId=28613212462&amp;vendorItemId=95811651001&amp;traceid=V0-153-adc2a67e40bca9cd&amp;clickBeacon=a736dd70-a112-11f1-a46a-799ecd6e0198%7E3&amp;requestid=20260826145451188005181273&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="자석으로 먹는 뱀 모양 리모컨 자동차 장난감 (남아용) - 2인용 배틀, 욕심쟁이 콩, 어린이 생일 선물">
-      <div class="rank">#016 </div>
+      <div class="rank">#015 </div>
       <div class="thumb hasvid" data-vid="y8-h53QTnKk"><div class="pimg"><img loading="lazy" src="product_images/015.jpg" alt="자석으로 먹는 뱀 모양 리모컨 자동차 장난감 (남아용) - 2인용 배틀, 욕심쟁이 콩, 어린이 생일 선물" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/y8-h53QTnKk/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">자석으로 먹는 뱀 모양 리모컨 자동차 장난감 (남아용) - 2인용 배틀, 욕심쟁이 콩, 어린이 생일 선물</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price">40,621원</span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c3RZPF7l" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c3RZPF7l" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="XREAL XBX A01+ AR 글래스 62g 초경량 1600니트 HDR10 147인치 대형 화면 공간적 흔들림 방지 휴대용 스마트 글래스">
-      <div class="rank">#017 </div>
+      <div class="rank">#014 </div>
       <div class="thumb hasvid" data-vid="ZPsvq_Z1cfI"><div class="pimg"><img loading="lazy" src="product_images/014.jpg" alt="XREAL XBX A01+ AR 글래스 62g 초경량 1600니트 HDR10 147인치 대형 화면 공간적 흔들림 방지 휴대용 스마트 글래스" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/ZPsvq_Z1cfI/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">XREAL XBX A01+ AR 글래스 62g 초경량 1600니트 HDR10 147인치 대형 화면 공간적 흔들림 방지 휴대용 스마트 글래스</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price">392,721원</span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c4dJ0L9t" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c4dJ0L9t" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="카템 맥세이프 차량용 거치대 진공흡착 대시보드 핸드폰 태블릿 자석">
-      <div class="rank">#018 </div>
+      <div class="rank">#013 </div>
       <div class="thumb hasvid" data-vid="gA0fbso_u0Y"><div class="pimg"><img loading="lazy" src="product_images/013.jpg" alt="카템 맥세이프 차량용 거치대 진공흡착 대시보드 핸드폰 태블릿 자석" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/gA0fbso_u0Y/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">카템 맥세이프 차량용 거치대 진공흡착 대시보드 핸드폰 태블릿 자석</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price">13,000원</span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c4T1btXN" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c4T1btXN" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="미니 코끼리 모양 휴대용 푸드 쿨러 팬, 핸즈프리 아기 수유 보조기, 그릇에 부착 가능한 디자인, 휴대 가능 및 USB 충전식 ﻿">
-      <div class="rank">#019 </div>
+      <div class="rank">#012 </div>
       <div class="thumb hasvid" data-vid="aemcUFm-Nps"><div class="pimg"><img loading="lazy" src="product_images/012.jpg" alt="미니 코끼리 모양 휴대용 푸드 쿨러 팬, 핸즈프리 아기 수유 보조기, 그릇에 부착 가능한 디자인, 휴대 가능 및 USB 충전식 ﻿" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/aemcUFm-Nps/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">미니 코끼리 모양 휴대용 푸드 쿨러 팬, 핸즈프리 아기 수유 보조기, 그릇에 부착 가능한 디자인, 휴대 가능 및 USB 충전식 ﻿</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price">10,057원</span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c3hC57un" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c3hC57un" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="자동차 티슈 박스 다기능 걸이형 대용량 티슈 가방 귀여운 곰 인형 자동차 장식 펜던트 종이 보관 가방">
-      <div class="rank">#020 </div>
+      <div class="rank">#011 </div>
       <div class="thumb hasvid" data-vid="BM7Q7XSnXBw"><div class="pimg"><img loading="lazy" src="product_images/011.jpg" alt="자동차 티슈 박스 다기능 걸이형 대용량 티슈 가방 귀여운 곰 인형 자동차 장식 펜던트 종이 보관 가방" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/BM7Q7XSnXBw/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">자동차 티슈 박스 다기능 걸이형 대용량 티슈 가방 귀여운 곰 인형 자동차 장식 펜던트 종이 보관 가방</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price">19,554원</span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c391jybZ" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c391jybZ" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="4D 바이오닉 손가락 목 어깨 마사지기 무선 목 경추 승모근 마사지 숄 브러시리스 모터 목 마사지기">
-      <div class="rank">#021 </div>
+      <div class="rank">#010 </div>
       <div class="thumb hasvid" data-vid="6XNgmyLn5z4"><div class="pimg"><img loading="lazy" src="product_images/010.jpg" alt="4D 바이오닉 손가락 목 어깨 마사지기 무선 목 경추 승모근 마사지 숄 브러시리스 모터 목 마사지기" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/6XNgmyLn5z4/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">4D 바이오닉 손가락 목 어깨 마사지기 무선 목 경추 승모근 마사지 숄 브러시리스 모터 목 마사지기</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price"></span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c3tie1D9" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c3tie1D9" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="휴대용 자석식 휴대폰 거치대 &amp; 셀카봉 3-in-1 접이식 삼각대 스탠드 (아이폰, 아이패드, 태블릿, 노트북, 데스크탑용)">
-      <div class="rank">#022 </div>
+      <div class="rank">#009 </div>
       <div class="thumb hasvid" data-vid="aY5nmLGZFN0"><div class="pimg"><img loading="lazy" src="product_images/009.jpg" alt="휴대용 자석식 휴대폰 거치대 &amp; 셀카봉 3-in-1 접이식 삼각대 스탠드 (아이폰, 아이패드, 태블릿, 노트북, 데스크탑용)" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/aY5nmLGZFN0/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">휴대용 자석식 휴대폰 거치대 &amp; 셀카봉 3-in-1 접이식 삼각대 스탠드 (아이폰, 아이패드, 태블릿, 노트북, 데스크탑용)</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price">16,700원</span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c3FN7EZZ" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c3FN7EZZ" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="스피도 성인용 써니G 수경 마리너 골드/브론즈/크림슨">
-      <div class="rank">#023 </div>
+      <div class="rank">#008 </div>
       <div class="thumb hasvid" data-vid="iVtEt_1wggs"><div class="pimg"><img loading="lazy" src="product_images/008.jpg" alt="스피도 성인용 써니G 수경 마리너 골드/브론즈/크림슨" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/iVtEt_1wggs/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-coupang">쿠팡</span></div>
         <h3 class="title">스피도 성인용 써니G 수경 마리너 골드/브론즈/크림슨</h3>
         <div class="price-label">쿠팡 최저가</div><div class="price-row"><span class="price">75,000원</span></div>
-        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=8780330095&amp;itemId=25546029755&amp;vendorItemId=95447858008&amp;traceid=V0-153-97d580ceb8cf9f19&amp;requestid=20260805164942541047498191&amp;token=31850C%7CGM" target="_blank" rel="nofollow sponsored noopener">🛒 쿠팡에서 보기</a>
+        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=8780330095&amp;itemId=25546029755&amp;vendorItemId=95447858008&amp;traceid=V0-153-97d580ceb8cf9f19&amp;requestid=20260805164942541047498191&amp;token=31850C%7CGM" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="미지아 탁상 핸드헬드 2in1 팬, 18.5시간 배터리">
-      <div class="rank">#024 </div>
+      <div class="rank">#007 </div>
       <div class="thumb hasvid" data-vid="CHZYKvR9xKY"><div class="pimg"><img loading="lazy" src="product_images/007.jpg" alt="미지아 탁상 핸드헬드 2in1 팬, 18.5시간 배터리" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/CHZYKvR9xKY/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">미지아 탁상 핸드헬드 2in1 팬, 18.5시간 배터리</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price"></span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c3ssjmJV" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c3ssjmJV" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="휴대용 걸이식 끈끈이 파리롤러 강력 무독성 과일파리 트랩 파리잡이 방수 파리롤러 과수원용">
-      <div class="rank">#025 </div>
+      <div class="rank">#006 </div>
       <div class="thumb"><img loading="lazy" src="product_images/006.jpg" alt="휴대용 걸이식 끈끈이 파리롤러 강력 무독성 과일파리 트랩 파리잡이 방수 파리롤러 과수원용" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
       <div class="body">
         <div class="srcs"><span class="src src-ali">알리</span></div>
         <h3 class="title">휴대용 걸이식 끈끈이 파리롤러 강력 무독성 과일파리 트랩 파리잡이 방수 파리롤러 과수원용</h3>
         <div class="price-label">알리 최저가</div><div class="price-row"><span class="price"></span></div>
-        <a class="cta" href="https://s.click.aliexpress.com/e/_c41TeK5D" target="_blank" rel="nofollow sponsored noopener">🛒 알리에서 보기</a>
+        <a class="cta" href="https://s.click.aliexpress.com/e/_c41TeK5D" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="BRUNO 브루노 블루투스 스피커 BDE060 볼륨 노브 화장실 방수 스피커">
-      <div class="rank">#026 </div>
+      <div class="rank">#005 </div>
       <div class="thumb hasvid" data-vid="XryZZ1zh1N4"><div class="pimg"><img loading="lazy" src="https://ads-partners.coupang.com/image1/gu7piKhHA93hG3V9gjgzhP-FYSiLhNTst7jv7d6tkQiNQsPNG81GfGcVSumpgKGLRPyagLj1Ol3GWPp5_JPTM0DUd9Jj40xnHRXd5pMqn3UhaRFkUsc9Y3KjBbOYu-iPmhewHSVWBktfrsmsmFlz7ajHtKJG0Z9F8zpYlw0aqlgkvu52yY9qbW_AcJrOtC0Xn7lDAqw_GyC7mQsi2RizCdj4BwyDM1qxBu7sr4z-9rIc5nfeWcmq3RC0CrsYHkvoW-4doBRxxXoXFnZH8UfLSU-iIRn9oW7VSw95njyTvrmfBz16uMV9okoRG3iDLgZQTU3kNy_3" alt="BRUNO 브루노 블루투스 스피커 BDE060 볼륨 노브 화장실 방수 스피커" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/XryZZ1zh1N4/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-coupang">쿠팡</span></div>
         <h3 class="title">BRUNO 브루노 블루투스 스피커 BDE060 볼륨 노브 화장실 방수 스피커</h3>
         <div class="price-label">쿠팡 최저가</div><div class="price-row"><span class="price">61,000원</span></div>
-        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=8753582912&amp;itemId=25448022831&amp;vendorItemId=95654289728&amp;traceid=V0-153-269bd38053f59332&amp;requestid=20260731150606929007189775&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">🛒 쿠팡에서 보기</a>
+        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=8753582912&amp;itemId=25448022831&amp;vendorItemId=95654289728&amp;traceid=V0-153-269bd38053f59332&amp;requestid=20260731150606929007189775&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="TELESIN 텔레신 다이빙 폰 리모트 케이스 방수 수중 촬영 스마트폰 핸들케이스">
-      <div class="rank">#027 </div>
+      <div class="rank">#004 </div>
       <div class="thumb hasvid" data-vid="0xt9zcMonzE"><div class="pimg"><img loading="lazy" src="https://ads-partners.coupang.com/image1/rjNE_x9LenA0DH2jrvTmdN28h9TglviPisYQtJCuuqRbc3BtmIwGIxGiTUtNMfcrOdhQWDdKDncE5HErI3Q813tjGyadL8c7DF28183ttUagzN0eqA6CjHaL81iNOioPF0zExdMJ58ZFZHrLtNGLv5mAQNV8sTFrVX6UBCWu1RpscmD4mUU1VMrunbwZxO_cIP-tVdT-nEbi3-0rxXxCBdRk6m05_GjBfPYliKdYzldx743gjc9J9fo0zPa_AhG0WRtr43W6gd3_QE6qt1jSkONB2d_vFwktiM4xT3tr1IPmZVKy93zjzrYgDh_S_00BveZ4Ew==" alt="TELESIN 텔레신 다이빙 폰 리모트 케이스 방수 수중 촬영 스마트폰 핸들케이스" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div><div class="vbox"><img loading="lazy" src="https://i.ytimg.com/vi/0xt9zcMonzE/frame0.jpg" alt="영상 미리보기" onerror="this.closest(&quot;.thumb&quot;).classList.remove(&quot;hasvid&quot;);this.closest(&quot;.vbox&quot;).remove()"><div class="pl"><i></i></div><span class="vt">영상</span></div></div>
       <div class="body">
         <div class="srcs"><span class="src src-coupang">쿠팡</span></div>
         <h3 class="title">TELESIN 텔레신 다이빙 폰 리모트 케이스 방수 수중 촬영 스마트폰 핸들케이스</h3>
         <div class="price-label">쿠팡 최저가</div><div class="price-row"><span class="price">76,200원</span></div>
-        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=9615170088&amp;itemId=28709240896&amp;vendorItemId=95650081060&amp;traceid=V0-153-f747d75f1cf65372&amp;requestid=20260728142341345183628757&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">🛒 쿠팡에서 보기</a>
+        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=9615170088&amp;itemId=28709240896&amp;vendorItemId=95650081060&amp;traceid=V0-153-f747d75f1cf65372&amp;requestid=20260728142341345183628757&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="샤오미 미지아 스탠딩 선풍기 1X 업그레이드 버전">
-      <div class="rank">#028 </div>
+      <div class="rank">#003 </div>
       <div class="thumb"><img loading="lazy" src="https://ads-partners.coupang.com/image1/XaO_IEKXZEY25rcLXS0_5PVm5Qwr68wcrESb2bPvSg86sownx5D_s6xUSrcpfgvGGBKeverWQRLbaWBiDNfN7Bju5eHCBsvRqwHlTUKNob7YgKxXXxgNhevYu-pK8NvSH0-zrH4-qGbVGZZjdy8z1tSwNnLoTF4ldqrFvo5CZjpuyA4xQLl4C5uzmmqp1pCn_oLRh9gck0-qd4D4dXn2lOVKyoRy2wmpyT64mRO_XYhtngt0jBZJPh2KqOs4jZvYChjtvkRYtgcXRP5_sVpwFZ5Wd5oumLnDsMRvGnZeodClMdZCQlMbM7A_PtVkSjl2YuthQg==" alt="샤오미 미지아 스탠딩 선풍기 1X 업그레이드 버전" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
       <div class="body">
         <div class="srcs"><span class="src src-coupang">쿠팡</span></div>
         <h3 class="title">샤오미 미지아 스탠딩 선풍기 1X 업그레이드 버전</h3>
         <div class="price-label">쿠팡 최저가</div><div class="price-row"><span class="price">61,540원</span></div>
-        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=7353677472&amp;itemId=18929123678&amp;vendorItemId=86055993725&amp;traceid=V0-153-9c3cba8d068abc1c&amp;requestid=20260708223102407168051948&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">🛒 쿠팡에서 보기</a>
+        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=7353677472&amp;itemId=18929123678&amp;vendorItemId=86055993725&amp;traceid=V0-153-9c3cba8d068abc1c&amp;requestid=20260708223102407168051948&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="소싱 엔진 아이스 제트 휴대용 선풍기, ENGINE-ICE-Z, 화이트">
-      <div class="rank">#029 </div>
+      <div class="rank">#002 </div>
       <div class="thumb"><img loading="lazy" src="https://ads-partners.coupang.com/image1/FPsat82MzquqekgYFBaWdiKKFQYxzwo9iUhmbI_FliWaBdcu0xYlOS-BD0MEmjrhFtyMqsDTXRhYjEoTi4v8qpuflZUSFBv5rQzq6n7a4RFwKEfZcn91k8JUSuKZG7yN4AdbBH09xlAOLxSoOvBC8-C5eoL2q11KYUUlwY5wAz76-swSkr1Rhf81YGmbOTLc4zZ7FhTJ6ti3x2VQmTPIupZ0b_p93vioSNWah_AmxGu9gdpbUxlsUbs7TtxiBQD3RzpG8-WqGvDIodomu8Pp1aSUJ3CZJMUMoUE=" alt="소싱 엔진 아이스 제트 휴대용 선풍기, ENGINE-ICE-Z, 화이트" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
       <div class="body">
         <div class="srcs"><span class="src src-coupang">쿠팡</span></div>
         <h3 class="title">소싱 엔진 아이스 제트 휴대용 선풍기, ENGINE-ICE-Z, 화이트</h3>
         <div class="price-label">쿠팡 최저가</div><div class="price-row"><span class="price">27,000원</span><span class="ship">🚀 로켓배송</span></div>
-        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=8941017992&amp;itemId=26146368616&amp;vendorItemId=93159355178&amp;traceid=V0-153-0ee50823a3530703&amp;clickBeacon=40f554f0-79fe-11f1-acf0-c51bcb2dd073%7E3&amp;requestid=20260707212034337134640375&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">🛒 쿠팡에서 보기</a>
+        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=8941017992&amp;itemId=26146368616&amp;vendorItemId=93159355178&amp;traceid=V0-153-0ee50823a3530703&amp;clickBeacon=40f554f0-79fe-11f1-acf0-c51bcb2dd073%7E3&amp;requestid=20260707212034337134640375&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
 
     <div class="card" data-title="[TV홈쇼핑동일상품] 니카사 진공흡착 스팀다리미 핸디형 가정용 올케어 의류 진공흡입 스타일">
-      <div class="rank">#030 </div>
+      <div class="rank">#001 </div>
       <div class="thumb"><img loading="lazy" src="https://ads-partners.coupang.com/image1/5-IQCE3IKTrBlTBk5y81RYUgwdWR_n-ne-i4SeY1TeQ5rtHXQi60Q5XtOBY72-KjCv_CiVrHErdgslW-9iIUh6Xo8HICBn9wh_EIVm1Rw6cx4tWcLMXZD-y9nTRweqPW9S3j5BPNPgpkrA9K3ndfpDh3Sbvl3fCKrKZuEYQToLLdHqL6-vH6yx2OGEuHhiJuOE2Jjk0ql9u083Itxbyul7qh7u6Dz59qsywCtB4_haB9Nr1exfh3VOAsyTj8NPFTcUJ_Y94ZSOn5fs8szCj6FtGuJxgVEp3FJC_8NGHkCo7gnMZ_8RffcU81oXWcMDt0c95BDA==" alt="[TV홈쇼핑동일상품] 니카사 진공흡착 스팀다리미 핸디형 가정용 올케어 의류 진공흡입 스타일" onerror="this.remove();this.parentNode.classList.add(&quot;noimg&quot;)"></div>
       <div class="body">
         <div class="srcs"><span class="src src-coupang">쿠팡</span></div>
         <h3 class="title">[TV홈쇼핑동일상품] 니카사 진공흡착 스팀다리미 핸디형 가정용 올케어 의류 진공흡입 스타일</h3>
         <div class="price-label">쿠팡 최저가</div><div class="price-row"><span class="price">198,000원</span><span class="ship">🚀 로켓배송</span></div>
-        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=9452815546&amp;itemId=28122526144&amp;vendorItemId=95078300705&amp;traceid=V0-153-45b52148fc0ad710&amp;requestid=20260609161958277042069776&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">🛒 쿠팡에서 보기</a>
+        <a class="cta" href="https://link.coupang.com/re/AFFSDP?lptag=AF1172880&amp;pageKey=9452815546&amp;itemId=28122526144&amp;vendorItemId=95078300705&amp;traceid=V0-153-45b52148fc0ad710&amp;requestid=20260609161958277042069776&amp;token=31850C%7CMIXED" target="_blank" rel="nofollow sponsored noopener">최저가 확인하기</a>
       </div>
     </div>
   </div>
